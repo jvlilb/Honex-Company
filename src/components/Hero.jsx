@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Code, Sparkles, Zap } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
@@ -7,14 +7,6 @@ const CAL_URL = 'https://cal.eu/jvlilb/30min';
 
 const Hero = () => {
   const { language, t, theme } = useAppContext();
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start']
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   const isRtl = language === 'ar';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -25,36 +17,22 @@ const Hero = () => {
   };
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12"
-    >
-      {/* Animated Background */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
+      {/* Background (Static blurs for performance) */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div style={{ y, opacity }} className="absolute inset-0">
-          <motion.div
-            animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            className="absolute -top-1/4 -left-1/4 w-[700px] h-[700px] rounded-full bg-brand-cyan/15 blur-[120px] mix-blend-screen"
-          />
-          <motion.div
-            animate={{ rotate: -360, scale: [1, 1.2, 1] }}
-            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-            className="absolute -bottom-1/4 -right-1/4 w-[700px] h-[700px] rounded-full bg-brand-purple/15 blur-[120px] mix-blend-screen"
-          />
+        <div className="absolute inset-0">
+          <div className="absolute -top-1/4 -left-1/4 w-[700px] h-[700px] rounded-full bg-brand-cyan/15 blur-[120px] mix-blend-screen" />
+          <div className="absolute -bottom-1/4 -right-1/4 w-[700px] h-[700px] rounded-full bg-brand-purple/15 blur-[120px] mix-blend-screen" />
           <motion.div
             animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.35, 0.2] }}
-            transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[80px]"
           />
-        </motion.div>
-
-        {/* Grid pattern overlay */}
+        </div>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-100" />
       </div>
 
       <div className="container mx-auto px-6 md:px-12 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-
         {/* Text Content */}
         <motion.div
           initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
@@ -62,7 +40,6 @@ const Hero = () => {
           transition={{ duration: 0.9, ease: 'easeOut' }}
           className="max-w-2xl"
         >
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -74,7 +51,7 @@ const Hero = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-cyan" />
             </span>
             <Sparkles size={14} />
-            <span>Honex — Premium Tech Agency</span>
+            <span>{t('heroBadge')}</span>
           </motion.div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-6">
@@ -105,7 +82,6 @@ const Hero = () => {
             {t('heroSubtitle')}
           </motion.p>
 
-          {/* Stats Row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,7 +100,6 @@ const Hero = () => {
             ))}
           </motion.div>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,7 +127,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* 3D Visual Element */}
+        {/* 3D Visual Element with GPU layer promotion */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -166,9 +141,8 @@ const Hero = () => {
               y: [0, -20, 0]
             }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative w-full h-full max-w-md"
+            className="relative w-full h-full max-w-md will-change-transform"
           >
-            {/* Main glass card */}
             <div className="absolute inset-0 glass rounded-3xl border border-white/20 p-6 flex flex-col gap-4 shadow-2xl overflow-hidden">
               <div className="flex justify-between items-center mb-2">
                 <div className="flex gap-2">
@@ -179,7 +153,6 @@ const Hero = () => {
                 <Code className="text-slate-400" size={18} />
               </div>
 
-              {/* Code-like skeleton lines */}
               <div className="space-y-3">
                 <div className="flex gap-2 items-center">
                   <div className="h-3 w-16 bg-brand-purple/40 rounded" />
@@ -196,10 +169,9 @@ const Hero = () => {
                 <div className="h-3 w-2/3 bg-brand-cyan/20 rounded" />
               </div>
 
-              {/* Progress bars */}
               <div className="mt-auto space-y-2">
                 <div className="flex justify-between text-xs text-slate-400 mb-1">
-                  <span>{language === 'ar' ? 'تقدم المشروع' : 'Project Progress'}</span>
+                  <span>{t('projectProgress')}</span>
                   <span>87%</span>
                 </div>
                 <div className="h-2 w-full bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
@@ -222,7 +194,6 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Floating cards */}
             <motion.div
               animate={{ y: [-15, 15, -15], rotate: [0, 5, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -237,7 +208,7 @@ const Hero = () => {
               className="absolute -left-10 bottom-1/4 w-28 h-18 glass rounded-2xl border border-brand-purple/30 flex flex-col items-center justify-center p-3 shadow-lg shadow-brand-purple/20 z-20"
             >
               <div className="text-brand-cyan font-black text-xl">99%</div>
-              <div className="text-xs text-slate-400 mt-1">{language === 'ar' ? 'رضا العملاء' : 'Satisfaction'}</div>
+              <div className="text-xs text-slate-400 mt-1">{t('satisfaction')}</div>
             </motion.div>
           </motion.div>
         </motion.div>

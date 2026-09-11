@@ -1,12 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Zap, Star, Building2, DollarSign } from 'lucide-react';
+import { Check, Zap, Star, Building2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const CAL_URL = 'https://cal.eu/jvlilb/30min';
-const YEARLY_DISCOUNT = 0.80; // pay 80% of monthly × 12 = 20% off
+const YEARLY_DISCOUNT = 0.80;
 
-// Base prices in DZD (monthly). Yearly = monthly × 12 × 0.80
 const plans = [
   {
     id: 'starter',
@@ -137,9 +136,8 @@ const plans = [
   },
 ];
 
-// ─── Pricing Card ─────────────────────────────────────────────────────────────
 const PricingCard = ({ plan, index, isPage }) => {
-  const { t, formatPrice, language, billing } = useAppContext();
+  const { t, formatPrice, language, billing, currency } = useAppContext();
   const Icon = plan.icon;
   const features = plan.features[language] || plan.features['en'];
 
@@ -174,7 +172,6 @@ const PricingCard = ({ plan, index, isPage }) => {
           : 'hover:-translate-y-2 hover:shadow-xl hover:shadow-brand-purple/10'
       }`}
     >
-      {/* Popular glow ring */}
       {plan.popular && (
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-brand-cyan/20 to-brand-purple/20 blur-sm -z-10 animate-pulse" />
       )}
@@ -186,12 +183,10 @@ const PricingCard = ({ plan, index, isPage }) => {
             : 'glass border-slate-200 dark:border-white/10'
         }`}
       >
-        {/* Soft integrated background glow for popular card */}
         {plan.popular && (
           <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         )}
 
-        {/* Icon + Title + Premium Badge */}
         <div>
           <div className="flex justify-between items-start mb-4">
             <div
@@ -215,15 +210,14 @@ const PricingCard = ({ plan, index, isPage }) => {
           </h3>
         </div>
 
-        {/* Price */}
         <div className={`py-4 border-y ${plan.popular ? 'border-white/10' : 'border-slate-200 dark:border-white/10'}`}>
           {plan.isCustom ? (
             <div>
               <div className={`text-4xl font-black ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
-                {language === 'ar' ? 'مخصص' : language === 'fr' ? 'Personnalisé' : 'Custom'}
+                {t('customPrice')}
               </div>
               <div className="text-sm text-slate-400 mt-1">
-                {language === 'ar' ? 'حسب متطلبات مشروعك' : language === 'fr' ? 'Selon vos besoins' : 'Based on your requirements'}
+                {t('customPriceSub')}
               </div>
             </div>
           ) : (
@@ -245,7 +239,6 @@ const PricingCard = ({ plan, index, isPage }) => {
           )}
         </div>
 
-        {/* Features */}
         <ul className="flex flex-col gap-3 flex-1">
           {features.map((feature, i) => (
             <li key={i} className="flex items-start gap-3">
@@ -269,7 +262,6 @@ const PricingCard = ({ plan, index, isPage }) => {
           ))}
         </ul>
 
-        {/* CTA */}
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
@@ -289,69 +281,7 @@ const PricingCard = ({ plan, index, isPage }) => {
   );
 };
 
-// ─── Shared Toggles Row (Billing + Currency) ─────────────────────────────────
-export const PricingToggles = () => {
-  const { t, currency, toggleCurrency, billing, toggleBilling } = useAppContext();
 
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-      {/* Monthly / Yearly */}
-      <div className="flex items-center gap-3 glass px-4 py-2.5 rounded-full border border-slate-200 dark:border-white/10 shadow-sm">
-        <span className={`text-sm font-bold transition-colors ${billing === 'monthly' ? 'text-brand-cyan' : 'text-slate-400'}`}>
-          {t('billingMonthly')}
-        </span>
-        <button
-          onClick={toggleBilling}
-          aria-label="Toggle billing period"
-          className={`relative w-12 h-6 rounded-full transition-all duration-300 ${
-            billing === 'yearly'
-              ? 'bg-gradient-to-r from-brand-cyan to-brand-purple'
-              : 'bg-slate-300 dark:bg-slate-700'
-          }`}
-        >
-          <motion.div
-            animate={{ x: billing === 'yearly' ? 24 : 2 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-md"
-          />
-        </button>
-        <span className={`text-sm font-bold transition-colors flex items-center gap-2 ${billing === 'yearly' ? 'text-brand-cyan' : 'text-slate-400'}`}>
-          {t('billingYearly')}
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-green-500/15 text-green-400 border border-green-500/20">
-            {t('saveYearly')}
-          </span>
-        </span>
-      </div>
-
-      {/* DZD / USD */}
-      <div className="flex items-center gap-3 glass px-4 py-2.5 rounded-full border border-slate-200 dark:border-white/10 shadow-sm">
-        <span className={`text-sm font-bold transition-colors ${currency === 'DZD' ? 'text-brand-cyan' : 'text-slate-400'}`}>
-          <span className="hidden sm:inline">دج</span> DZD
-        </span>
-        <button
-          onClick={toggleCurrency}
-          aria-label="Toggle currency"
-          className={`relative w-12 h-6 rounded-full transition-all duration-300 ${
-            currency === 'USD'
-              ? 'bg-gradient-to-r from-brand-cyan to-brand-purple'
-              : 'bg-slate-300 dark:bg-slate-700'
-          }`}
-        >
-          <motion.div
-            animate={{ x: currency === 'USD' ? 24 : 2 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-md"
-          />
-        </button>
-        <span className={`text-sm font-bold transition-colors flex items-center gap-1 ${currency === 'USD' ? 'text-brand-cyan' : 'text-slate-400'}`}>
-          <DollarSign size={13} /> USD
-        </span>
-      </div>
-    </div>
-  );
-};
-
-// ─── Inline section for Homepage (no section wrapper, just the cards) ─────────
 export const PricingCards = () => {
   return (
     <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-center">
@@ -362,19 +292,16 @@ export const PricingCards = () => {
   );
 };
 
-// ─── Homepage section wrapper (keeps existing section on homepage) ────────────
 const Pricing = ({ isPage = false }) => {
-  const { t } = useAppContext();
+  const { t, billing, toggleBilling, language } = useAppContext();
 
   return (
     <section id="pricing" className="py-28 relative overflow-hidden">
-      {/* BG glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand-purple/5 blur-[100px] rounded-full" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Header - Hidden on Dedicated Page since PricingPage.jsx provides it */}
         {!isPage && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -392,16 +319,49 @@ const Pricing = ({ isPage = false }) => {
           </motion.div>
         )}
 
-        {/* Toggles (Only on dedicated page) */}
-        {isPage && <PricingToggles />}
+        <div className="flex justify-center mb-12">
+          <div className="relative flex items-center p-1 bg-slate-100 dark:bg-slate-800/50 rounded-full border border-slate-200 dark:border-white/10 w-[340px]">
+            <button
+              onClick={() => billing !== 'monthly' && toggleBilling()}
+              className={`relative z-10 flex-1 flex justify-center items-center py-2.5 text-sm font-bold transition-colors rounded-full ${
+                billing === 'monthly' ? 'text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {t('billingMonthly')}
+            </button>
+            <button
+              onClick={() => billing !== 'yearly' && toggleBilling()}
+              className={`relative z-10 flex-1 flex justify-center items-center py-2.5 text-sm font-bold transition-colors rounded-full ${
+                billing === 'yearly' ? 'text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {t('billingYearly')}
+              <span className={`mx-2 px-2 py-0.5 rounded-full text-[10px] font-black transition-colors ${
+                billing === 'yearly' ? 'bg-white/20 text-white' : 'bg-green-500/15 text-green-500 dark:text-green-400'
+              }`}>
+                {t('saveYearly')}
+              </span>
+            </button>
+            
+            {/* Animated Slider */}
+            <div
+              className={`absolute top-1 bottom-1 w-1/2 bg-brand-purple rounded-full transition-transform duration-300 ease-in-out`}
+              style={{
+                width: 'calc(50% - 4px)', // Adjust width for padding
+                [language === 'ar' ? 'right' : 'left']: '4px',
+                transform: billing === 'yearly' 
+                  ? (language === 'ar' ? 'translateX(-100%)' : 'translateX(100%)') 
+                  : 'translateX(0)',
+              }}
+            />
+          </div>
+        </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-center">
           {plans.map((plan, index) => (
             <PricingCard key={plan.id} plan={plan} index={index} isPage={isPage} />
           ))}
         </div>
-
       </div>
     </section>
   );

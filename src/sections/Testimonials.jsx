@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, StarHalf, Quote, Play, X } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import ReviewForm from '../components/ReviewForm';
 
 const testimonials = [
   {
@@ -77,22 +78,61 @@ const testimonials = [
 const Testimonials = () => {
   const { t, language } = useAppContext();
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [dynamicReviews, setDynamicReviews] = useState([]);
+  const [dynamicVideos, setDynamicVideos] = useState([]);
+  const [activeVideoSrc, setActiveVideoSrc] = useState(null);
+  const [activeVideoType, setActiveVideoType] = useState('url');
 
-  const getName = (t) => language === 'ar' ? t.nameAr : language === 'fr' ? t.nameFr : t.nameEn;
-  const getRole = (t) => language === 'ar' ? t.roleAr : language === 'fr' ? t.roleFr : t.roleEn;
+  useEffect(() => {
+    const fetchDynamicData = () => {
+      const storedReviews = JSON.parse(localStorage.getItem('honex_reviews') || '[]');
+      setDynamicReviews(storedReviews.filter(r => r.approved));
+      
+      const storedVideos = JSON.parse(localStorage.getItem('onyx_videos') || '[]');
+      setDynamicVideos(storedVideos);
+    };
+    
+    fetchDynamicData();
+    window.addEventListener('reviews_updated', fetchDynamicData);
+    return () => window.removeEventListener('reviews_updated', fetchDynamicData);
+  }, []);
+
+  const allTestimonials = [...testimonials, ...dynamicReviews.map(r => ({
+    nameAr: r.anonymous ? 'مجهول' : r.name,
+    nameEn: r.anonymous ? 'Anonymous' : r.name,
+    nameFr: r.anonymous ? 'Anonyme' : r.name,
+    roleAr: r.role || '',
+    roleEn: r.role || '',
+    roleFr: r.role || '',
+    avatar: 'https://i.pravatar.cc/80?u=' + r.id,
+    rating: r.rating,
+    quoteAr: r.quote.ar || r.quote,
+    quoteEn: r.quote.en || r.quote,
+    quoteFr: r.quote.fr || r.quote,
+    country: r.country || '🌍'
+  }))];
+
+  const renderVideos = dynamicVideos.length > 0 
+    ? dynamicVideos 
+    : [1, 2, 3, 4, 5, 6].map(i => ({ id: i, type: 'url', src: 'https://www.w3schools.com/html/mov_bbb.mp4', thumbnail: `https://picsum.photos/400/600?random=${i}` }));
+  
+  let displayVideos = [...renderVideos];
+  while (displayVideos.length < 6 && displayVideos.length > 0) {
+    displayVideos = [...displayVideos, ...renderVideos];
+  }
+
+  const getName = (item) => language === 'ar' ? item.nameAr : language === 'fr' ? item.nameFr : item.nameEn;
+  const getRole = (item) => language === 'ar' ? item.roleAr : language === 'fr' ? item.roleFr : item.roleEn;
   const getQuote = (item) => language === 'ar' ? item.quoteAr : language === 'fr' ? item.quoteFr : item.quoteEn;
-
-  const videoReels = [1, 2, 3, 4, 5, 6];
 
   return (
     <section id="testimonials" className="py-24 relative overflow-hidden bg-slate-50 dark:bg-white/2">
-      {/* BG */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/4 blur-[120px] rounded-full" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -112,9 +152,8 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((item, index) => (
+          {allTestimonials.map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -123,26 +162,21 @@ const Testimonials = () => {
               transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="glass rounded-2xl p-7 border border-slate-200 dark:border-white/10 hover:border-brand-cyan/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-cyan/5 relative overflow-hidden"
             >
-              {/* Decorative quote icon */}
               <div className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-8">
                 <Quote size={48} className="text-brand-cyan/20" />
               </div>
 
-              {/* Stars - Fixed to 4.5 */}
               <div className="flex gap-1 mb-4 items-center">
-                {Array.from({ length: 4 }).map((_, i) => (
+                {Array.from({ length: Math.floor(item.rating || 5) }).map((_, i) => (
                   <Star key={i} size={16} className="text-amber-400 fill-amber-400" />
                 ))}
-                <StarHalf size={16} className="text-amber-400 fill-amber-400" />
-                <span className="text-sm font-black text-amber-500 ml-2 rtl:mr-2 rtl:ml-0">4.5</span>
+                <span className="text-sm font-black text-amber-500 ml-2 rtl:mr-2 rtl:ml-0">{item.rating || 5}.0</span>
               </div>
 
-              {/* Quote */}
               <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base mb-6 relative z-10">
                 "{getQuote(item)}"
               </p>
 
-              {/* Author */}
               <div className="flex items-center gap-3 border-t border-slate-200 dark:border-white/10 pt-5">
                 <img
                   src={item.avatar}
@@ -166,7 +200,6 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Overall rating row */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -184,10 +217,19 @@ const Testimonials = () => {
             <div className="text-slate-900 dark:text-white font-black text-xl">4.5</div>
             <div className="h-6 w-px bg-slate-300 dark:bg-white/20" />
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              {language === 'ar' ? <>بناءً على <span dir="ltr">50+</span> تقييم موثق</> : language === 'fr' ? <>Basé sur <span dir="ltr">50+</span> avis vérifiés</> : <>Based on <span dir="ltr">50+</span> verified reviews</>}
+              {t('reviewsCount')}
             </div>
           </div>
+
+          <div className="mt-8 flex justify-center">
+            <button onClick={() => setShowReviewForm(true)} className="px-6 py-2.5 rounded-xl border-2 border-brand-cyan text-brand-cyan font-bold hover:bg-brand-cyan/10 transition-colors">
+              {t('leaveReview')}
+            </button>
+          </div>
         </motion.div>
+
+        {showReviewForm && <ReviewForm onClose={() => setShowReviewForm(false)} />}
+
         {/* Video Testimonials Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -198,12 +240,11 @@ const Testimonials = () => {
         >
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white">
-              {language === 'ar' ? 'آراء شركائنا بالفيديو' : language === 'fr' ? 'Témoignages Vidéo' : 'Video Testimonials'}
+              {t('videoTestimonials')}
             </h3>
           </div>
 
           <div className="relative flex overflow-hidden w-full group py-4">
-            {/* Gradient fades for edges */}
             <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-[#f8fafc] dark:from-[#07090e] to-transparent z-10 pointer-events-none" />
             <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-[#f8fafc] dark:from-[#07090e] to-transparent z-10 pointer-events-none" />
 
@@ -216,13 +257,13 @@ const Testimonials = () => {
                 repeat: Infinity 
               }}
             >
-              {[...videoReels, ...videoReels, ...videoReels].map((_, i) => (
+              {[...displayVideos, ...displayVideos, ...displayVideos].map((v, i) => (
                 <div 
                   key={i} 
                   className="w-64 h-96 rounded-2xl bg-slate-200 dark:bg-slate-800 relative cursor-pointer overflow-hidden border border-slate-300 dark:border-white/10 group/card mx-3 flex-shrink-0"
-                  onClick={() => setVideoModalOpen(true)}
+                  onClick={() => { setActiveVideoSrc(v.src); setActiveVideoType(v.type); setVideoModalOpen(true); }}
                 >
-                  <img src={`https://picsum.photos/400/600?random=${i}`} alt="Video Thumbnail" className="w-full h-full object-cover opacity-80 group-hover/card:opacity-100 transition-opacity duration-300 group-hover/card:scale-105" />
+                  <img src={v.thumbnail || `https://picsum.photos/400/600?random=${i}`} alt="Video Thumbnail" className="w-full h-full object-cover opacity-80 group-hover/card:opacity-100 transition-opacity duration-300 group-hover/card:scale-105" />
                   <div className="absolute inset-0 bg-black/20 flex items-center justify-center transition-all group-hover/card:bg-black/40">
                     <div className="w-16 h-16 rounded-full glass flex items-center justify-center text-white backdrop-blur-md shadow-xl group-hover/card:scale-110 transition-transform">
                       <Play className="ml-1" size={24} fill="currentColor" />
@@ -235,7 +276,6 @@ const Testimonials = () => {
         </motion.div>
       </div>
 
-      {/* Video Modal */}
       <AnimatePresence>
         {videoModalOpen && (
           <motion.div
@@ -258,12 +298,16 @@ const Testimonials = () => {
               >
                 <X size={20} />
               </button>
-              <video 
-                className="w-full h-full object-cover"
-                src="https://www.w3schools.com/html/mov_bbb.mp4" 
-                controls 
-                autoPlay 
-              />
+              {activeVideoType === 'url' ? (
+                <video 
+                  className="w-full h-full object-cover"
+                  src={activeVideoSrc} 
+                  controls 
+                  autoPlay 
+                />
+              ) : (
+                <div className="w-full h-full [&>iframe]:w-full [&>iframe]:h-full" dangerouslySetInnerHTML={{ __html: activeVideoSrc }} />
+              )}
             </motion.div>
           </motion.div>
         )}

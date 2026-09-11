@@ -13,16 +13,22 @@
 @layer base {
   * {
     box-sizing: border-box;
+    cursor: auto;
   }
 
   html {
     font-family: var(--font-cairo);
     scroll-behavior: smooth;
+    background-color: #f8fafc;
+  }
+
+  html.dark {
+    background-color: var(--color-brand-dark);
   }
 
   body {
     font-family: var(--font-cairo);
-    background-color: #f8fafc;
+    background-color: inherit;
     color: #0f172a;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -45,6 +51,10 @@
 
   input, textarea, button, select {
     font-family: var(--font-cairo);
+  }
+
+  a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], input[type="checkbox"], input[type="radio"], select, label[for], summary, [onclick], [tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
   }
 }
 
@@ -177,4 +187,13 @@
 .dark input,
 .dark textarea {
   color-scheme: dark;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

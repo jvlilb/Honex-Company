@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Globe, ChevronDown, Menu, X } from 'lucide-react';
+import { Globe, ChevronDown, Menu, X } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const CAL_URL = 'https://cal.eu/jvlilb/30min';
 
 const Header = () => {
-  const { language, theme, toggleTheme, changeLanguage, t, activeView, setView } = useAppContext();
+  const { language, changeLanguage, t, activeView, setView } = useAppContext();
   const [isScrolled, setIsScrolled] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,7 +21,6 @@ const Header = () => {
     setMobileMenuOpen(false);
   }, [activeView]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const close = () => setLangDropdownOpen(false);
     if (langDropdownOpen) document.addEventListener('click', close);
@@ -39,7 +38,6 @@ const Header = () => {
     { code: 'fr', label: 'Français', flag: '🇫🇷' },
   ];
 
-  // 6-item nav as required
   const navItems = [
     { key: 'home',       view: 'home' },
     { key: 'services',   view: 'services' },
@@ -51,24 +49,28 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed z-50 transition-all duration-300 ${
         isScrolled
-          ? 'py-3 glass shadow-lg shadow-black/10 dark:shadow-black/40'
-          : 'py-5 bg-transparent'
+          ? 'top-4 left-4 right-4 md:left-8 md:right-8 lg:left-12 lg:right-12 py-3 glass rounded-2xl shadow-lg shadow-black/10 dark:shadow-black/40'
+          : 'top-0 left-0 right-0 py-5 bg-transparent'
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
 
-        {/* Logo */}
+        {/* Logo & Company Name */}
         <button
           onClick={() => handleNav('home')}
-          className="cursor-pointer text-2xl font-black tracking-tighter flex items-center gap-2 group"
+          className="cursor-pointer flex items-center gap-3 group text-start"
         >
-          {/* // TODO: INSERT LOGO IMAGE URL HERE */}
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-purple flex items-center justify-center text-white font-black shadow-lg group-hover:scale-110 transition-transform duration-200">
-            H
+          <img src="/onyx-logo.png" alt={t('companyName')} className="w-9 h-9 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-200" />
+          <div className="flex flex-col leading-tight">
+            <span className="font-black text-slate-900 dark:text-white text-lg leading-none">
+              {t('companyName')}
+            </span>
+            <span className="text-[10px] font-light text-slate-500 dark:text-slate-400 leading-none mt-0.5">
+              {t('companyTagline')}
+            </span>
           </div>
-          <span className="dark:text-white text-slate-900 font-black">Honex Company</span>
         </button>
 
         {/* Desktop Nav */}
@@ -90,8 +92,6 @@ const Header = () => {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-2">
-
-          {/* Language Selector */}
           <div className="relative" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
@@ -133,17 +133,7 @@ const Header = () => {
             </AnimatePresence>
           </div>
 
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-          >
-            {theme === 'dark'
-              ? <Sun size={18} className="text-amber-300" />
-              : <Moon size={18} className="text-slate-700" />}
-          </button>
 
-          {/* CTA */}
           <button
             onClick={() => window.open(CAL_URL, '_blank')}
             className="px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-bold text-sm hover:scale-105 transition-transform shadow-lg hover:shadow-brand-cyan/30"
@@ -152,7 +142,6 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Toggle */}
         <button
           className="lg:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -162,7 +151,6 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Nav */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -189,35 +177,22 @@ const Header = () => {
 
               <div className="h-px bg-slate-200 dark:bg-white/10 my-3" />
 
-              {/* Language pills */}
-              <div className="flex items-center justify-between gap-2 px-2">
-                <div className="flex gap-2">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => changeLanguage(lang.code)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-                        language === lang.code
-                          ? 'bg-brand-purple text-white'
-                          : 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300'
-                      }`}
-                    >
-                      {lang.code.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={toggleTheme}
-                  className="p-2 rounded-full bg-slate-200 dark:bg-white/10"
-                >
-                  {theme === 'dark'
-                    ? <Sun size={16} className="text-amber-300" />
-                    : <Moon size={16} />}
-                </button>
+              <div className="flex items-center gap-2 px-2 flex-wrap">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+                      language === lang.code
+                        ? 'bg-brand-purple text-white'
+                        : 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    {lang.code.toUpperCase()}
+                  </button>
+                ))}
               </div>
 
-              {/* Mobile CTAs */}
               <button
                 onClick={() => { window.open(CAL_URL, '_blank'); setMobileMenuOpen(false); }}
                 className="w-full mt-3 py-3.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-bold text-base"

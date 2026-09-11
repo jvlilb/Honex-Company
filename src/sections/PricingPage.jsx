@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
-import Pricing, { PricingToggles } from './Pricing';
+import Pricing from './Pricing';
 import { useAppContext } from '../context/AppContext';
 
 const PricingPage = () => {
