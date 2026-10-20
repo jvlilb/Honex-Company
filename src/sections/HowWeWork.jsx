@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, PenTool, Code2, Rocket, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Search, PenTool, Code2, Rocket, ArrowRight } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const steps = [
@@ -52,8 +52,6 @@ const steps = [
 
 const HowWeWork = () => {
   const { t, language } = useAppContext();
-  const isRtl = language === 'ar';
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const getTitle = (item) => language === 'ar' ? item.titleAr : language === 'fr' ? item.titleFr : item.titleEn;
   const getDesc = (item) => language === 'ar' ? item.descAr : language === 'fr' ? item.descFr : item.descEn;

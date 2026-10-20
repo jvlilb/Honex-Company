@@ -136,8 +136,8 @@ const plans = [
   },
 ];
 
-const PricingCard = ({ plan, index, isPage }) => {
-  const { t, formatPrice, language, billing, currency } = useAppContext();
+const PricingCard = ({ plan, index }) => {
+  const { t, formatPrice, language, billing } = useAppContext();
   const Icon = plan.icon;
   const features = plan.features[language] || plan.features['en'];
 

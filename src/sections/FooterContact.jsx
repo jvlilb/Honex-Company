@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, MapPin, Mail, Phone, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Send, MapPin, Mail, Phone } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 // ── Inline brand SVGs (lucide-react no longer ships brand icons) ──────────
@@ -45,7 +45,6 @@ export const IconWhatsApp = ({ size = 18 }) => (
 const FooterContact = () => {
   const { t, language, setView, activeView } = useAppContext();
   const isRtl = language === 'ar';
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);

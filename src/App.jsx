@@ -18,6 +18,7 @@ const AboutUs = lazy(() => import('./sections/AboutUs'));
 const Privacy = lazy(() => import('./sections/Privacy'));
 const PricingPage = lazy(() => import('./sections/PricingPage'));
 const ContactUs = lazy(() => import('./sections/ContactUs'));
+const DemoPage = lazy(() => import('./demos/DemoPage'));
 
 // Page transition variants — intentionally minimal to prevent black-screen flash.
 // We do NOT animate exit to opacity:0 because AnimatePresence mode="wait" holds the
@@ -32,6 +33,15 @@ const pageVariants = {
 const AppContent = () => {
   const { activeView } = useAppContext();
   const [adminOpen, setAdminOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -43,6 +53,21 @@ const AppContent = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Route to the dedicated E-Commerce Demo Storefronts
+  if (currentPath.startsWith('/demos')) {
+    const segments = currentPath.split('/').filter(Boolean);
+    const storeId = segments[1] || '';
+    return (
+      <Suspense fallback={
+        <div className="flex items-center justify-center min-h-screen bg-slate-950 text-white">
+          <div className="w-10 h-10 border-4 border-brand-cyan border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }>
+        <DemoPage storeId={storeId} />
+      </Suspense>
+    );
+  }
 
   const renderView = () => {
     switch (activeView) {

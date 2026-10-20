@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Code, Megaphone, Smartphone, Search, PenTool, BarChart3,
-  Shield, Cloud, Cpu, Globe, CheckCircle, ArrowRight, ArrowLeft, Zap
+  Code, Megaphone, Smartphone, Search, PenTool,
+  Shield, CheckCircle, ArrowRight, ArrowLeft
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Mail, Phone } from 'lucide-react';
+import { MapPin, Mail } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { IconFacebook, IconXTwitter, IconGitHub, IconLinkedIn } from './FooterContact';
 

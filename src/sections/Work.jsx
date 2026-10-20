@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Globe, Cpu, Puzzle, Layers, Monitor, ChevronRight, ChevronLeft, Star } from 'lucide-react';
+import { X, ExternalLink, Globe, Puzzle, Layers, Monitor, Star, ShoppingBag, Sparkles } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import EcommercePortfolioSection from '../components/EcommercePortfolioSection';
 
 // ─────────────────────────────────────────────
 // Centralized Project Data Array
@@ -507,8 +508,11 @@ const PreviewModal = ({ project, onClose }) => {
 // ─────────────────────────────────────────────
 // Main Work Component
 // ─────────────────────────────────────────────
+// Main Work Component
+// ─────────────────────────────────────────────
 const Work = ({ isHome = false }) => {
   const { t, language, setView } = useAppContext();
+  const [activeSection, setActiveSection] = useState('ecommerce'); // 'ecommerce' | 'custom'
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -530,95 +534,139 @@ const Work = ({ isHome = false }) => {
     <div className={isHome ? "py-24 relative overflow-hidden bg-slate-50 dark:bg-white/2" : "section-fade-in"}>
       {/* Hero Banner (Only on dedicated page) */}
       {!isHome && (
-        <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-brand-purple/8 blur-[100px] rounded-full" />
-        </div>
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-              {language === 'ar' ? 'أعمالنا ' : 'Our '}
-              <span className="text-gradient">{language === 'ar' ? 'المتميزة' : language === 'fr' ? 'Réalisations' : 'Portfolio'}</span>
-            </h1>
-            <p className="text-lg text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
-              {t('ourWorkSubtitle')}
-            </p>
-          </motion.div>
-        </div>
-      </section>
+        <section className="relative pt-32 pb-14 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-brand-purple/8 blur-[100px] rounded-full" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-brand-cyan/8 blur-[90px] rounded-full" />
+          </div>
+          <div className="container mx-auto px-6 relative z-10 text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-brand-cyan/30 text-brand-cyan text-xs font-black mb-4">
+                <Sparkles size={14} />
+                <span>معرض الأعمال والنماذج التفاعلية</span>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-5">
+                {language === 'ar' ? 'أعمالنا ' : 'Our '}
+                <span className="text-gradient">{language === 'ar' ? 'المتميزة والنماذج' : language === 'fr' ? 'Réalisations' : 'Portfolio'}</span>
+              </h1>
+              <p className="text-base md:text-lg text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                اكتشف مجموعة من 10 نماذج متاجر إلكترونية حية قابلة للتصفح والشراء التجريبي، بالإضافة إلى مشاريع وتطبيقات الويب المخصصة.
+              </p>
+            </motion.div>
+          </div>
+        </section>
       )}
 
       {/* Simple Header for Homepage */}
       {isHome && (
-        <div className="container mx-auto px-6 relative z-10 text-center mb-12">
+        <div className="container mx-auto px-6 relative z-10 text-center mb-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">
               {t('ourWork')}
             </h2>
             <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
-              {t('ourWorkSubtitle')}
+              تصفح نماذج المتاجر الإلكترونية التفاعلية ومشاريعنا التقنية المصممة بأعلى معايير الأداء والجمال.
             </p>
           </motion.div>
         </div>
       )}
 
-      {/* Filter Tabs */}
-      <section className="pb-6 relative z-10">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap justify-center gap-3">
-            {filters.map(({ key, label, icon: Icon }) => (
-              <motion.button
-                key={key}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveFilter(key)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-250 ${
-                  activeFilter === key
-                    ? 'bg-gradient-to-r from-brand-cyan to-brand-purple text-white shadow-lg shadow-brand-cyan/25'
-                    : 'glass border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:border-brand-cyan/30'
-                }`}
-              >
-                <Icon size={14} />
-                {label}
-                <span className={`text-xs px-1.5 py-0.5 rounded-full ${activeFilter === key ? 'bg-white/20' : 'bg-slate-200 dark:bg-white/10 text-slate-500'}`}>
-                  {key === 'all' ? honexProjects.length : honexProjects.filter(p => p.category === key).length}
-                </span>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Main Showcase Switcher Tabs */}
+      <div className="container mx-auto px-6 relative z-10 mb-10">
+        <div className="max-w-md mx-auto p-1.5 rounded-2xl glass border border-slate-200 dark:border-white/10 flex items-center justify-center gap-2 shadow-sm">
+          <button
+            onClick={() => setActiveSection('ecommerce')}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 ${
+              activeSection === 'ecommerce'
+                ? 'bg-gradient-to-r from-brand-cyan to-brand-purple text-white shadow-md shadow-brand-cyan/20 scale-[1.02]'
+                : 'text-slate-600 dark:text-slate-300 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <ShoppingBag size={16} />
+            <span>المتاجر الإلكترونية (10 نماذج)</span>
+          </button>
 
-      {/* Projects Grid */}
-      <section className="py-12 relative z-10">
-        <div className="container mx-auto px-6">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence>
-              {displayedProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onPreview={setSelectedProject}
-                />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <button
+            onClick={() => setActiveSection('custom')}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 ${
+              activeSection === 'custom'
+                ? 'bg-gradient-to-r from-brand-cyan to-brand-purple text-white shadow-md shadow-brand-cyan/20 scale-[1.02]'
+                : 'text-slate-600 dark:text-slate-300 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Monitor size={16} />
+            <span>الأنظمة والمواقع المخصصة</span>
+          </button>
         </div>
-        
-        {/* View All Button for Homepage */}
-        {isHome && (
-          <div className="text-center mt-12 relative z-10">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setView('work')}
-              className="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-bold shadow-lg shadow-brand-cyan/25 inline-flex items-center gap-2"
-            >
-              {t('viewAllWork')}
-            </motion.button>
-          </div>
-        )}
-      </section>
+      </div>
+
+      {/* ── SECTION 1: E-COMMERCE DEMO STOREFRONTS (10 STORES) ─────────────── */}
+      {activeSection === 'ecommerce' ? (
+        <section className="container mx-auto px-6 relative z-10">
+          <EcommercePortfolioSection isHome={isHome} onNavigateAll={() => setView('work')} />
+        </section>
+      ) : (
+        /* ── SECTION 2: CUSTOM SOFTWARE & WEB APPS ───────────────────────── */
+        <>
+          {/* Filter Tabs for Custom Projects */}
+          <section className="pb-6 relative z-10">
+            <div className="container mx-auto px-6">
+              <div className="flex flex-wrap justify-center gap-3">
+                {filters.map(({ key, label, icon: Icon }) => (
+                  <motion.button
+                    key={key}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setActiveFilter(key)}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-250 ${
+                      activeFilter === key
+                        ? 'bg-gradient-to-r from-brand-cyan to-brand-purple text-white shadow-lg shadow-brand-cyan/25'
+                        : 'glass border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:border-brand-cyan/30'
+                    }`}
+                  >
+                    <Icon size={14} />
+                    {label}
+                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${activeFilter === key ? 'bg-white/20' : 'bg-slate-200 dark:bg-white/10 text-slate-500'}`}>
+                      {key === 'all' ? honexProjects.length : honexProjects.filter(p => p.category === key).length}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Projects Grid */}
+          <section className="py-6 relative z-10">
+            <div className="container mx-auto px-6">
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <AnimatePresence>
+                  {displayedProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      onPreview={setSelectedProject}
+                    />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* View All Button for Homepage */}
+      {isHome && (
+        <div className="text-center mt-12 relative z-10">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setView('work')}
+            className="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-bold shadow-lg shadow-brand-cyan/25 inline-flex items-center gap-2"
+          >
+            {t('viewAllWork')}
+          </motion.button>
+        </div>
+      )}
 
       {/* Portfolio Modal */}
       <AnimatePresence>

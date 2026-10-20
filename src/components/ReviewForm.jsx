@@ -4,7 +4,7 @@ import { X, Star } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const ReviewForm = ({ onClose }) => {
-  const { t, language } = useAppContext();
+  const { t } = useAppContext();
   const [formData, setFormData] = useState({
     name: '',
     role: '',

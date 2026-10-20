@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Heart, Award, Users, Code, Lightbulb, Shield, ArrowRight, ArrowLeft, CheckCircle, Globe } from 'lucide-react';
+import { Target, Heart, Award, Lightbulb, Shield, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const CAL_URL = 'https://cal.eu/jvlilb/30min';
@@ -73,8 +73,6 @@ const AboutUs = () => {
   const isRtl = language === 'ar';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const steps = timeline[language] || timeline['en'];
-
-  const getLabel = (item, field) => item[`${field}${language === 'ar' ? 'Ar' : language === 'fr' ? 'Fr' : 'En'}`] || item[`${field}En`];
 
   return (
     <div className="section-fade-in">

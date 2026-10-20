@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, Play, Trash2, Check, Star } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
 
 const ONYX_ADMIN_2026 = 'ONYX_ADMIN_2026';
 
 const AdminVideoPanel = ({ onClose }) => {
-  const { language } = useAppContext();
   const [auth, setAuth] = useState(sessionStorage.getItem('admin_auth') === '1');
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('videos');
