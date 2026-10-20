@@ -1,14 +1,49 @@
 import React from 'react';
 import { DEMO_STORES, getStoreById } from './data/demoStoresData';
 import DemoStoreShell from './components/DemoStoreShell';
+import LumiereStore from './stores/LumiereStore';
+import NexaTechStore from './stores/NexaTechStore';
+import GlowCuraStore from './stores/GlowCuraStore';
+import HomeVibeStore from './stores/HomeVibeStore';
+import TerraSportStore from './stores/TerraSportStore';
+import VayraStore from './stores/VayraStore';
+import ReadoraStore from './stores/ReadoraStore';
+import PawzStore from './stores/PawzStore';
+import ZenFitStore from './stores/ZenFitStore';
+import OutletStore from './stores/OutletStore';
 import { ArrowRight, ShoppingBag, ExternalLink } from 'lucide-react';
 
 export const DemoPage = ({ storeId }) => {
-  const store = getStoreById(storeId);
+  const normalizedId = (storeId || '').toLowerCase().trim();
+  const store = getStoreById(normalizedId);
 
-  // If valid store found, render its custom storefront
-  if (store) {
-    return <DemoStoreShell store={store} />;
+  // Route to the dedicated, specialized storefront implementation
+  switch (normalizedId) {
+    case 'lumiere':
+      return <LumiereStore />;
+    case 'nexatech':
+      return <NexaTechStore />;
+    case 'glowcura':
+      return <GlowCuraStore />;
+    case 'homevibe':
+      return <HomeVibeStore />;
+    case 'terrasport':
+      return <TerraSportStore />;
+    case 'vayra':
+      return <VayraStore />;
+    case 'readora':
+      return <ReadoraStore />;
+    case 'pawz':
+      return <PawzStore />;
+    case 'zenfit':
+      return <ZenFitStore />;
+    case 'outlet':
+      return <OutletStore />;
+    default:
+      if (store) {
+        return <DemoStoreShell store={store} />;
+      }
+      break;
   }
 
   // Fallback 404 / Directory of All 10 Demo Stores
@@ -22,7 +57,7 @@ export const DemoPage = ({ storeId }) => {
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-black">شركة هونكس — دليل المتاجر التجريبية</h1>
-              <p className="text-xs text-slate-400">نماذج متاجر إلكترونية تفاعلية متكاملة (10 متاجر)</p>
+              <p className="text-xs text-slate-400">نماذج متاجر إلكترونية تفاعلية متكاملة (10 متاجر حية)</p>
             </div>
           </div>
           <a
@@ -30,7 +65,7 @@ export const DemoPage = ({ storeId }) => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 transition-colors"
           >
             <ArrowRight size={14} />
-            <span>الرئيسية</span>
+            <span>العودة للرئيسية</span>
           </a>
         </div>
 

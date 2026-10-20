@@ -1,0 +1,222 @@
+HONEX COMPANY — CORRECTIVE REDESIGN PROMPT
+Make the 10 existing demo stores genuinely different products, not one template with 10 color themes
+You are a principal product designer, senior frontend engineer, design-systems architect, and QA lead working inside the existing Honex Company repository already open in this workspace.
+THE PROBLEM TO FIX
+The ten current storefront demos look polished at first glance, but their underlying experience is too similar. The same header/navigation, search field, category strip, product grid, product cards, shopping cart, and page rhythm have been reused with different colors, imagery, labels, and a few small details. This is not acceptable for a portfolio whose purpose is to demonstrate broad product-design capability.
+
+Treat the supplied screenshot / current implementation as evidence of this problem. Do not just adjust colors, fonts, images, border radii, labels, or spacing. Perform a genuine UX and information-architecture redesign of every storefront. A visitor should immediately recognize that each store belongs to a different product category and has its own shopping behavior, layout, navigation, search pattern, product presentation, product-detail page, cart experience, and mobile experience.
+MISSION
+Refactor and redesign the ten existing demo stores in the existing Honex Company project so that each one feels independently art-directed and purpose-built. Preserve Honex's main website, existing branding, current routing approach, and all unrelated working features. Keep the portfolio entry for each demo working. Do not rebuild the whole Honex website from scratch.
+
+Do not stop after producing a plan or describing proposed changes. Inspect, implement, test, fix, and report. Start by briefly summarizing the existing architecture and your redesign plan, then proceed without waiting for approval.
+NON-NEGOTIABLE DESIGN RULE
+Share business logic when useful; do not share a generic storefront composition.
+
+You may share low-level utilities and tested commerce logic (for example, currency formatting, typed product models, cart calculations, localStorage safety helpers, accessible button primitives, form validation, and routing utilities). You must not use one generic StorePage, StoreShell, StoreHeader, ProductGrid, ProductCard, SearchBar, CartDrawer, or ProductDetailTemplate whose props merely change the store theme and content. Shared primitives must not determine the overall layout or visual behavior of all ten stores.
+
+Use separate, store-specific composition and UI components for the header/navigation, discovery/search, category browsing, product listing, product cards, product details, cart/bag, and key shopping interactions. For example, if the project uses React, create feature folders/components for each store; adapt naming and file organization to the current framework. A shared hook or data helper may power different UIs, but each store's UI must be individually designed and implemented.
+
+Changing only CSS variables, theme tokens, copy, product photos, icons, or accent colors is explicitly a failed solution.
+PHASE 1 — INSPECT THE EXISTING CODE BEFORE EDITING
+1. Inspect package.json, framework, routing, entry points, app structure, styling approach, responsive rules, shared components, data models, state management, localStorage logic, assets, and Vercel configuration.
+2. Open and inspect the existing implementation of all ten routes, not only the portfolio screenshot. Identify which components and layout patterns are currently reused.
+3. Trace the behavior of navigation, search, category filters, product detail, wishlist, cart, quantity adjustment, and demo checkout. Record what currently works, what is broken, and what is visually duplicated.
+4. Preserve working behavior and existing route URLs unless a necessary routing fix is required. Do not overwrite configuration blindly or make unrelated dependency upgrades.
+5. Share a concise diagnosis and then implement the redesign immediately.
+PHASE 2 — CREATE A STORE-SPECIFIC DESIGN SPECIFICATION
+Before coding each store, define its own design direction in code comments or a short project document. Every store must have a distinct answer to all of the following:
+- What kind of shopper is this interface designed for?
+- What is the primary way customers discover products?
+- What is the distinctive navigation model?
+- What is the distinctive search experience?
+- How are categories and filters presented?
+- What is the store-specific product-card format and listing composition?
+- What is the product-detail page's information hierarchy?
+- What is distinctive about its cart/bag experience?
+- What is its mobile navigation and mobile shopping pattern?
+- What visual rhythm, typography hierarchy, image treatment, and interaction style support this business category?
+Do not use the same answers across stores. The ten designs below are mandatory creative directions, not vague suggestions. Adapt them intelligently to the current app rather than mechanically copying the wording.
+PHASE 3 — TEN DISTINCT EXPERIENCE DESIGNS
+1. LUMIÈRE — Luxury fashion
+Visual language: black, muted gold, ivory; luxury editorial fashion photography; generous breathing room; refined typography; asymmetry; magazine-like art direction. Avoid a generic mass-market catalog.
+
+Required unique experience:
+- Use a restrained editorial masthead and a sophisticated, context-appropriate fashion navigation / mega-menu. The logo and imagery should feel like a luxury label, not a generic marketplace.
+- Create a large editorial campaign area and curated fashion stories (for example, a seasonal edit or designer-inspired collection), followed by deliberately curated product groupings rather than a standard category-icon strip plus identical grid.
+- Product cards should prioritize visual presentation, fabric/detail cues, subtle quick-view behavior, and elegant color/size availability. Avoid excessive sale badges.
+- Product detail should read like a fashion editorial: large gallery, materials, fit/size guide, size and color selection, delivery/returns information, and related looks.
+- Search should open as an elegant overlay or expanded editorial search surface, with curated suggestions and recent searches rather than the same small search box used elsewhere.
+- The bag should feel like a luxury boutique bag/drawer with larger product imagery, size/color details, and understated subtotal/checkout actions.
+- Mobile must preserve the editorial feel and large imagery without becoming a generic stacked catalog.
+2. NexaTech — Electronics
+Visual language: navy, electric blue, violet; precise information hierarchy; technical product presentation; compact, information-rich surfaces; restrained futuristic details without visual clutter.
+
+Required unique experience:
+- Build a utility-focused electronics navigation with a prominent functional search interface and clear access to phones, computers, gaming, audio, and wearables.
+- Use a dense catalog with a distinctive specifications-led product list/grid. Show meaningful spec summaries such as storage, RAM, screen size, compatibility, or battery on the relevant products; do not show irrelevant repeated filler specs.
+- Implement a working compare-products workflow: select at least two items, view a comparison tray/panel, compare available attributes, and remove items. Comparison must use actual demo product data.
+- Search should offer useful category suggestions and spec/category filters. The filter UI should feel like an electronics catalog, such as a structured sidebar on desktop and filter sheet on mobile.
+- Product detail should prioritize image, key specifications, variants/configuration where applicable, warranty/compatibility information as illustrative demo content, and a clearly organized specs table/accordion.
+- The cart should make model/configuration and product specs easy to confirm; its layout must not reuse LUMIÈRE's boutique bag UI.
+- Mobile should prioritize fast search, comparison access, readable specs, and compact filter controls.
+3. GlowCura — Beauty and personal care
+Visual language: soft pink, warm beige, white; luminous product photography; clean whitespace; ingredient-led editorial modules; calm and reassuring, not overloaded with pink cards.
+
+Required unique experience:
+- Structure discovery around skincare concerns / routines and product families, rather than copying a universal horizontal category strip. Include a visible “shop by concern” or routine-led entry point.
+- Build a lightweight interactive skin-concern/routine finder using simple front-end demo questions. Clearly label the result as general demo guidance, not medical advice, and make the resulting product recommendations functional.
+- Product cards should show useful beauty information where available, such as product type, skin concern, size/volume, and key ingredient—not only photo/name/price.
+- Product details should include ingredient and usage accordions, skin-type / concern tags, size options if relevant, and a clear way to add a product to a routine/bundle.
+- Search should support finding products by name/category and demo concern/ingredient tags where these exist in the data. Use a beauty-specific search panel or guided discovery, not the electronics search.
+- Give the cart/routine builder a distinctive routine-oriented presentation that groups skincare steps or bundle items where relevant.
+- Mobile should make routine discovery, product usage information, and bundle creation easy with accessible touch controls.
+4. HomeVibe — Home, furniture and decor
+Visual language: warm ivory, beige, clay, olive green; large interior photography; editorial compositions; calm, spatial, tactile design.
+
+Required unique experience:
+- Make the primary discovery method shop by room / interior style, supported by large photographic room collections. Do not start with the same row of small category icons used by other stores.
+- Use room inspiration panels with real UI hotspots or linked items that lead to relevant products. These hotspots must be interactive and based on the demo data; don't draw fake controls that do nothing.
+- Product cards may be editorial, wide, or room-contextual; show dimensions/material/care details where relevant instead of cloning standard fashion/tech product tiles.
+- Product detail should prioritize dimensions, materials, assembly/care, delivery notes as demo text, room styling suggestions, and related coordinated products.
+- Search and filters should support product, room, style, color/material, and relevant dimensions where present in data. Present these controls in a room/furniture-appropriate way.
+- Add a functional “complete the room” or curated set workflow that can add several selected products to the cart. Do not pretend to offer AR/3D visualization unless actually implemented; don't present decorative nonworking “view in room” buttons.
+- Cart should support room-set context or grouped furniture/decor items and large product thumbnails, visibly distinct from a standard single-item cart drawer.
+- Mobile should emphasize room photography and clear, reachable filters without shrinking the imagery into generic thumbnails.
+5. TerraSport — Sports and outdoor adventure
+Visual language: forest green, deep navy, white; rugged outdoor imagery; strong utility typography; functional, purposeful interaction patterns.
+
+Required unique experience:
+- Organize discovery around activities / use cases such as hiking, camping, running, cycling, and training. Design an activity-first navigation model or activity selector.
+- Use product discovery that helps customers choose equipment for a use case. Support relevant structured fields such as activity, size, weather/use context, weight, capacity, or equipment type where applicable to the sample data.
+- Use a product finder or equipment checklist interaction that lets visitors select an activity and see relevant demo products. It must actually filter the product data.
+- Product cards should surface practical gear data, compatibility/use-case labels, and specifications appropriate to the product, not the same fashion cards with new colors.
+- Product detail should emphasize function, materials, sizing/fit, technical data, included items, and intended use where relevant.
+- Search and filter should prioritize activity, size, type, and price with a useful desktop filter panel and a distinct mobile filter sheet.
+- Cart should feel like an equipment list, making size/variant and selected-use context clear. Do not copy NexaTech's specs table or LUMIÈRE's luxury bag layout.
+- Mobile should enable quick category/activity switching while preserving technical product information.
+6. VAYRA — Modern, trend-led fashion
+Visual language: white, black, confident fuchsia; fast-moving editorial fashion; youth-oriented and trend-aware without copying SHEIN or any identifiable competitor's layout, wording, assets, or trade dress.
+
+Required unique experience:
+- Build a trend/discovery-first retail experience, using a distinct composition such as a fashion feed, asymmetric tiles, “new in” edits, or trend collections. It must not reuse LUMIÈRE's luxury editorial treatment or the generic catalog layout.
+- Use trend-led category navigation and a mobile-first shopping flow. A scrollable category rail or mobile bottom navigation is acceptable only if it is purposefully implemented and differs from the other stores.
+- Product cards should support useful quick-add interactions and obvious size/color selection. Prevent adding a product requiring a size choice until a valid size has been selected, or open a selection sheet first.
+- Product detail should prioritize color/size variants, fit information, multiple views, and styling recommendations.
+- Search should provide a trend-oriented search overlay with useful recent/trending demo queries and working results; don't present fake popularity claims as real data.
+- The bag should emphasize selected size/color, easy variant correction, quantity controls, and a fast mobile experience; its composition must be visually different from LUMIÈRE.
+- Do not create false scarcity or fabricated urgency. Timers are permitted only when configured with a real demo end time and must clearly be demo information.
+7. Readora — Books and stationery
+Visual language: cream, warm brown, muted green; typography-led design; readable text; bookshelf metaphors and quiet editorial warmth.
+
+Required unique experience:
+- Replace the generic category strip with a bookstore/library experience: distinct shelves, editorial book collections, author/genre discovery, and/or horizontal shelf carousels with clear keyboard/touch controls.
+- Search should support matching book title, author, category/genre, and ISBN-like demo identifier only where such fields exist. Search results should feel like a bookstore catalog, not an electronics search interface.
+- Product cards should resemble book covers/shelf listings, show author and genre, and use text hierarchy appropriate to reading. Stationery products may have a different card treatment from books.
+- Product details should include synopsis, author, genre, page count/publisher/format where present in the data, stationery specifications when relevant, and functional related-book recommendations.
+- If adding a “preview excerpt” feature, use locally authored sample demo text only and display it in an accessible modal/panel; never imply copyrighted book excerpts are real if they are not.
+- Include an interest/genre selection that changes recommendations using the actual sample catalog.
+- The cart should read like a bookshop order/list and distinguish book formats or stationery variants. Do not clone any other store's cart drawer.
+- Mobile should preserve legible title/author typography and browseable shelves rather than flattening everything into the same four-column grid.
+8. Pawz — Pet supplies
+Visual language: mint, light blue, yellow; friendly and warm, professional rather than childish; clear animal imagery and rounded but accessible UI.
+
+Required unique experience:
+- Place a meaningful pet-type selector (for example cat / dog / other supported animals present in data) near the start of the shopping journey. Changing the selected pet must actually adapt product recommendations and/or available filters.
+- Organize categories and product discovery by animal and need (food, toys, beds, grooming/care, accessories) rather than generic retail categories alone.
+- Product data and cards should identify the intended animal and relevant attributes, such as pack weight, size, life stage, or material, only when applicable.
+- Add a functional bundle builder for a sample pet-care kit or starter pack; adding/removing bundle items must affect its total and cart contents.
+- Search should prioritize pet type and product need, with pet-specific quick filters and a distinct UI from other stores.
+- Product detail should emphasize appropriate pet, size/pack information, materials or ingredients where applicable, and practical usage/care information. Avoid unsupported health claims.
+- The cart should support pack size, quantities, and bundle contents in a clear pet-supply-specific layout.
+- Keep it accessible and professional; do not rely on random paw-print decorations instead of a real interaction design.
+9. ZenFit — Fitness and training equipment
+Visual language: black, charcoal, lime; high-contrast athletic photography; performance-oriented hierarchy; energetic but disciplined.
+
+Required unique experience:
+- Build discovery around training goals or training contexts (for example strength, home gym, mobility, cardio) and types of equipment / accessories.
+- Include a working goal-based product finder or “build your setup” tool that adjusts recommendations from available demo products. Do not imply that product recommendations are personalized medical or coaching advice.
+- Product cards should surface useful training information such as equipment type, dimensions/load only when present in data, use case, and package contents.
+- Product detail should distinguish equipment from apparel/accessories and provide relevant specifications, dimensions, care, or size options without one generic details panel for everything.
+- Search should work by product, training goal, and equipment type as supported by product metadata; its interaction model should differ from TerraSport's activity finder.
+- Add a functional kit/bundle composition interaction for a home-gym or training setup. Bundle contents and price must update correctly as items are added or removed.
+- Cart should make kit composition, individual gear, selected variants, and quantities clear, with a visual treatment specific to ZenFit.
+- Build a bold, immersive training campaign and a purposeful mobile layout—not just a black background with lime buttons.
+10. OUTLET — Multi-category discounts
+Visual language: black, white, vivid red; crisp deal-led hierarchy; easy comparison; controlled visual urgency without clutter or deception.
+
+Required unique experience:
+- Design a deal-discovery interface around offers, discount bands, category deals, price range, and savings—not another standard catalog with red accents.
+- Create an interactive “deal radar” / offer-filter panel that actually filters sample products by category, price range, and discount level. Include sorting for price and discount where data supports it.
+- Show previous price, current demo price, and discount percentage consistently. Compute percentages from price data rather than hardcoding labels. Validate that the previous price exceeds the current price.
+- Clearly label promotions and values as illustrative demo data. Do not invent current stock scarcity, fake timers, “only one left,” or false urgency. A timer may only be used if a real demo end timestamp exists and is labeled as demo content.
+- Product cards should make discount math and final price immediately understandable, with a distinctive density/visual order unlike the fashion or electronics stores.
+- Search should be integrated with category / price / discount discovery and offer useful quick filtering, not simply duplicate the same search overlay.
+- Product detail should make the discount calculation, current/previous demo price, applicable product variants, and relevant condition/details clear.
+- The cart should include a clear illustrative “you save” breakdown based on the sample price data, in addition to correct item subtotal and total. Never show savings that do not match the data.
+- Mobile should make deal filtering, comparing prices, and the final amount easy to use without hiding essential price information.
+PHASE 4 — DIFFERENTIATE THE SIX CORE UI AREAS IN EVERY STORE
+For each of the ten stores, individually redesign all of these areas:
+1. Header and navigation: its own arrangement, menu style, hierarchy, and interaction. A logo row plus identical category menu is not sufficient.
+2. Search: its own placement and interaction model. At least the visual treatment and discovery logic must be category-specific; all searches still need to return correct matching results.
+3. Category and filter experience: distinct from other stores in both presentation and information architecture, adapted to the product type.
+4. Product listing and product cards: store-specific structure, information density, aspect ratios, image crop, badges, metadata, and quick actions. Do not apply a universal product-card component and only swap CSS.
+5. Product detail: a unique content hierarchy and interaction pattern that genuinely suits the category. Ensure all selectable variants work.
+6. Cart/bag and checkout entry: a unique visual structure and category-appropriate item summary. Cart operations and calculations may use shared business logic, but the presentation cannot be a simple recolor of one drawer.
+7. Homepage composition: vary the sequence, scale, width, alignment, and type of modules. Do not repeat “hero → icon categories → 4-column grid → same benefits strip → footer” on all ten pages.
+8. Mobile experience: make specific decisions per store. Do not merely collapse the same desktop header and grid in the same way for all ten stores.
+Every store must also have distinct loading/empty/no-results states that are on-brand and useful, while maintaining consistent accessibility.
+VISUAL DIFFERENTIATION ACCEPTANCE TEST
+Before declaring completion, create a design audit table with one row per store and columns for: layout signature, navigation, search, filters, card/listing style, product-detail hierarchy, cart treatment, key interaction, and mobile behavior.
+
+Then compare the ten stores pairwise. Each pair must differ in several structural patterns—not only color or imagery. At minimum, every store must have its own navigation composition, search presentation, catalog/listing composition, product-card design, product-detail hierarchy, and cart presentation. It is acceptable for the underlying cart calculations or data utilities to be shared.
+
+Ask this question for each pair: “If all logos, product names, photos, and colors were temporarily hidden, could a visitor still distinguish these interfaces from their layout and interaction patterns?” If the answer is no, redesign them again. Do not rely on this test alone; use it alongside the concrete differences specified above.
+FUNCTIONAL REQUIREMENTS — PRESERVE AND TEST
+All demos must remain navigable and functional after redesign:
+- Keep the current working route scheme where possible, preferably /demos/lumiere, /demos/nexatech, /demos/glowcura, /demos/homevibe, /demos/terrasport, /demos/vayra, /demos/readora, /demos/pawz, /demos/zenfit, and /demos/outlet.
+- Each portfolio card must open its correct corresponding internal route in a new tab, with target="_blank" and rel="noopener noreferrer" or framework equivalent.
+- Direct URL entry and refresh must work, including on Vercel.
+- Search, categories, filters, sorting, product detail navigation, variant selection, wishlist, cart, quantity updates, item removal, and empty-cart behavior must work on all stores.
+- Maintain a typed, consistent core product/cart model if the existing framework supports it, but add store-specific metadata to enable genuinely different interactions.
+- Use store-specific localStorage keys for carts/favorites and safely handle invalid stored data; do not leak one store's cart or favorites into another store.
+- Demo checkout must validate required fields and end with an honest confirmation that no real order was sent and no money was charged.
+- Display an accessible but unobtrusive notice explaining that products, prices, discounts, ratings/reviews, and stock data are illustrative demo content. Do not pretend a real payment, merchant order, delivery service, API, or backend is connected.
+- Do not invent authentic reviews, real sales figures, customer quotes, stock scarcity, or sales outcomes.
+- Use safe image fallbacks and useful alt text. Avoid broken remote images. Prefer assets already present in the project when suitable; if remote images are used, handle load failures gracefully.
+- Keep Arabic as the default language, with correct RTL direction and alignment across navigation, drawers, dialogs, numeric prices, breadcrumbs, forms, and mobile UI. Pay attention to mixed Arabic/Latin brand names and numbers.
+- Support keyboard interaction, visible focus states, semantic landmarks, accessible form labels, dialog focus behavior, adequate contrast, and reduced motion.
+- Avoid fake buttons, href="#", dead links, alert() interactions, decorative controls that do nothing, or an action that claims success without executing.
+IMPLEMENTATION GUIDANCE
+- Use the existing framework, package manager, router, conventions, and styling solution. Do not replace the project stack.
+- If React/TypeScript is used, make independently composed store pages/components (for example, stores/lumiere/, stores/nexatech/, etc.) and use shared hooks/services only for stable underlying logic. Adapt to the repository's actual architecture rather than forcing this specific folder structure.
+- Use store-scoped styles or component styles to prevent accidental cross-store CSS leakage.
+- Do not use one store's design as the parent template for all others. Design each from its business requirements.
+- Avoid unnecessary dependencies, configuration rewrites, fake functionality, excessive animation, generic gradients, inconsistent spacing, and overuse of decorative badges.
+- Preserve the existing Honex Company homepage and portfolio presentation. If necessary, update portfolio thumbnails/previews so they reflect the redesigned versions rather than the old template-like screenshots.
+- Do not ask me to manually edit ten files or finish the changes myself. Implement the work in the current repository.
+PHASE 5 — TEST THE REAL IMPLEMENTATION
+Run available lint, type-check, tests, and production build commands. Fix errors caused by your changes and distinguish any pre-existing errors from new ones.
+
+Verify each route independently. On all ten routes, test at least: direct navigation and refresh, search, category/filter behavior, open a product, variant selection if relevant, wishlist, add to cart, change quantity, remove item, cart total, empty state, and demo checkout confirmation. Also test store-specific interactions:
+- NexaTech: compare two products and remove one from comparison.
+- GlowCura: complete the routine/concern finder and add a recommended product or routine item.
+- HomeVibe: activate a room hotspot or shop-by-room collection and add a coordinated set.
+- TerraSport: use the activity/gear finder to filter results.
+- VAYRA: select a color and size and verify add-to-bag behavior.
+- Readora: change genre/interest and verify recommendations; test shelf controls if present.
+- Pawz: change pet type and build/edit a bundle.
+- ZenFit: change training goal and edit a training kit.
+- OUTLET: filter by discount and verify the displayed discount calculation and savings total.
+- LUMIÈRE: test editorial collection links, quick view if provided, and size/color selection.
+Check desktop and mobile widths and ensure the redesigned areas do not overflow or become unusable. Verify that every portfolio card opens the correct demo in a new tab and that Vercel direct-route refresh behavior is correct for the existing framework.
+FINAL REPORT REQUIRED
+When finished, return:
+1. A concise summary of what changed.
+2. A clear statement confirming that the stores were structurally redesigned, not just recolored—or disclose any store that did not receive the full redesign.
+3. The route for each of the ten demos.
+4. A design differentiation audit table covering the areas above.
+5. The exact commands run and their actual results for lint, type-check, tests, and build.
+6. Any remaining issues, missing assets, integrations, or deployment configuration.
+Never claim that tests passed unless you ran them. Never claim a backend/payment/order integration exists unless it is actually implemented and verified.
+FINAL QUALITY BAR
+The result must look like a portfolio created by a product-design team with broad e-commerce experience. Ten different palettes on one shared template is a failure. Ten distinct, category-appropriate, navigable, functional shopping experiences built within the same Honex portfolio is the goal.
